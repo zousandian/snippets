@@ -1,0 +1,13 @@
+<pre><code>(function() {
+  if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+    var msViewportStyle = document.createElement("style");
+    msViewportStyle.appendChild(
+      document.createTextNode("@-ms-viewport{width:auto!important}")
+    );
+    document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+  }
+})();
+</code></pre>
+<h3 id="refer">Refer</h3>
+<p>Matt Stow: <a href="http://mattstow.com/responsive-design-in-ie10-on-windows-phone-8.html">Responsive Design in IE10 on Windows Phone 8</a></p>
+<p>Tim Kadlec: <a href="http://timkadlec.com/2013/01/windows-phone-8-and-device-width/">Windows Phone 8 and Device-Width</a></p>

@@ -1,0 +1,14 @@
+<pre><code>function isInViewport(el) {
+    var rect = el.getBoundingClientRect();
+
+    return rect.bottom &gt; 0 &amp;&amp;
+        rect.right &gt; 0 &amp;&amp;
+        rect.left &lt; (window.innerWidth || document. documentElement.clientWidth) &amp;&amp;
+        rect.top &lt; (window.innerHeight || document. documentElement.clientHeight);
+}
+</code></pre>
+<h3 id="exampleusage">Example Usage:</h3>
+<pre><code>window.addEventListener('scroll', function() {
+    isInViewport(el);
+})
+</code></pre>

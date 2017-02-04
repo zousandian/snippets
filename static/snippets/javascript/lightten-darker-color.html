@@ -1,0 +1,26 @@
+<pre><code>function LightenDarkenColor(col, amt) {
+    var usePound = false;
+    if (col[0] == "#") {
+        col = col.slice(1);
+        usePound = true;
+    }
+    var num = parseInt(col,16);
+    var r = (num &gt;&gt; 16) + amt;
+    if (r &gt; 255) r = 255;
+    else if  (r &lt; 0) r = 0;
+    var b = ((num &gt;&gt; 8) &amp; 0x00FF) + amt;
+    if (b &gt; 255) b = 255;
+    else if  (b &lt; 0) b = 0;
+    var g = (num &amp; 0x0000FF) + amt;
+    if (g &gt; 255) g = 255;
+    else if (g &lt; 0) g = 0;
+    return (usePound?"#":"") + (g | (b &lt;&lt; 8) | (r &lt;&lt; 16)).toString(16);
+}
+</code></pre>
+<p>使用：</p>
+<pre><code>// Lighten
+var NewColor = LightenDarkenColor("#F06D06", 20);
+
+// Darken
+var NewColor = LightenDarkenColor("#F06D06", -20);
+</code></pre>

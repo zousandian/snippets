@@ -1,0 +1,7 @@
+<pre><code>RewriteEngine on
+RewriteCond %{HTTPS} !on
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+</code></pre>
+<pre><code>RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+</code></pre>

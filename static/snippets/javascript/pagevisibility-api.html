@@ -1,0 +1,26 @@
+<pre><code>&lt;!DOCTYPE HTML&gt;
+ &lt;html&gt;
+ &lt;head&gt;
+      &lt;script type="text/javascript"&gt;
+           timer = 0;
+           function onLoad(){
+                document.addEventListener("visibilitychange",stateChanged);
+                document.addEventListener("webkitvisibilitychange", stateChanged);
+                document.addEventListener("msvisibilitychange", stateChanged);
+           }
+           function stateChanged(){
+                console.log(document.webkitVisibilityState);
+                if(document.hidden || document.webkitHidden || document.msHidden){
+                     //new tab or window minimized
+                     timer = new Date().getTime();
+                }
+                else {
+                     alert('You were away for ' + (new Date().getTime()-timer)/1000+ ' seconds.')
+                }
+           }
+      &lt;/script&gt;
+ &lt;/head&gt;
+ &lt;body onLoad="onLoad()"&gt;
+ &lt;/body&gt;
+ &lt;/html&gt;
+</code></pre>
