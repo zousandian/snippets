@@ -70,7 +70,7 @@ diretoryTreeToObj('../snippets', (err, res) => {
       data.push({
         tag: obj.name,
         title: item.title,
-        url: `/static/snippets/${obj.name}/${item.name}.html`
+        url: `/snippets/${obj.name}/${item.name}`
       })
     })
   })
