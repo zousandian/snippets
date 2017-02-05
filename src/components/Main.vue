@@ -1,20 +1,20 @@
 <template>
-  <div class="hello">
-    <div class="tags">
+  <div class="snippets">
+    <div class="snippets-tags">
       <ul class="list-inline">
         <li v-for="tag in tags">
           <router-link :to="'/snippets/' + tag">[{{ tag }}]</router-link>
         </li>
       </ul>
     </div>
-    <div class="tag-items">
+    <div class="snippets-items">
       <ul>
         <li v-for="item in snippets" v-if="currTag === item.tag">
           <router-link :to="item.url">{{ item.title }}</router-link>
         </li>
       </ul>
     </div>
-    <div class="content" v-html="content">
+    <div class="snippets-snippets" id="snippet-content" v-html="content">
     </div>
   </div>
 </template>
@@ -23,6 +23,8 @@
 import snippets from '../../snippets/data.json'
 import 'whatwg-fetch'
 import router from '../router'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/github.css'
 
 export default {
   name: 'hello',
@@ -71,6 +73,12 @@ export default {
         .then(checkStatus)
         .then(body => {
           this.content = body
+          this.$nextTick(() => {
+            const codes = document.querySelector('#snippet-content').querySelectorAll('pre code')
+            for (var i = 0; i < codes.length; i++) {
+              hljs.highlightBlock(codes[i])
+            }
+          })
         }).catch(err => {
           console.log(err)
           router.replace('/snippets/' + this.currTag)
@@ -90,7 +98,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
   ul {
     list-style: none;
   }
@@ -98,7 +106,17 @@ export default {
     display: inline-block;
     cursor: pointer;
   }
-  .router-link-active {
-    color: red;
+
+  .snippets-tags {
+    text-align: center;
+    .router-link-active {
+      color: red;
+    }
+  }
+
+  .snippets-items {
+    .router-link-active {
+      color: red;
+    }
   }
 </style>
