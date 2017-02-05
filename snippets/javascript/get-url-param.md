@@ -1,6 +1,6 @@
 ---
 title: 获取 url 的 param
---
+---
 
 ```
 function getQueryVariable(variable) {

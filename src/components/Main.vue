@@ -7,14 +7,20 @@
         </li>
       </ul>
     </div>
+
+    <div class="snippets-search">
+      <input type="text" placeholder="搜索关键字" v-model="keyword">
+    </div>
+
     <div class="snippets-items">
       <ul>
-        <li v-for="item in snippets" v-if="currTag === item.tag">
+        <li v-for="item in snippets">
           <router-link :to="item.url">{{ item.title }}</router-link>
+          <span class="label" v-show="keyword.trim()">{{ item.tag }}</span>
         </li>
       </ul>
     </div>
-    <div class="snippets-snippets" id="snippet-content" v-html="content">
+    <div class="snippets-snippets" id="snippet-content" v-html="content" v-show="!keyword.trim()">
     </div>
   </div>
 </template>
@@ -30,14 +36,22 @@ export default {
   name: 'hello',
   data () {
     return {
-      snippets: snippets,
       currTag: 'article',
-      content: ''
+      content: '',
+      keyword: ''
     }
   },
   computed: {
+    snippets () {
+      const keyword = this.keyword.trim().toLowerCase()
+      if (keyword) {
+        return snippets.filter(item => item.title && item.title.toLowerCase().indexOf(keyword) > -1)
+      } else {
+        return snippets.filter(item => item.tag === this.currTag)
+      }
+    },
     tags () {
-      return this.snippets.reduce((prev, curr) => {
+      return snippets.reduce((prev, curr) => {
         if (prev.indexOf(curr.tag) < 0) {
           return [...prev, curr.tag]
         } else {
@@ -85,12 +99,14 @@ export default {
         })
     },
     initData () {
+      this.content = ''
+      this.keyword = ''
+
       if (this.tags.indexOf(this.$route.params.tag) < 0) {
         router.replace('/snippets/' + this.tags[0])
       }
 
       this.toggleTag(this.$route.params.tag)
-      this.content = ''
       if (this.$route.params.title) {
         this.loadContent(this.$route.path)
       }
@@ -118,5 +134,12 @@ export default {
     .router-link-active {
       color: red;
     }
+  }
+
+  .label {
+    background: #efefef;
+    border-radius: 3px;
+    padding: 0 4px;
+    font-size: 12px;
   }
 </style>

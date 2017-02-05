@@ -1,6 +1,6 @@
-----
+---
 title:  具有 ejs layout 的 express generator
-----
+---
 
 ```js
 // app.js
