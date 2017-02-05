@@ -1,26 +1,32 @@
 <template>
-  <div class="snippets">
-    <div class="snippets-tags">
-      <ul class="list-inline">
-        <li v-for="tag in tags">
-          <router-link :to="'/snippets/' + tag">[{{ tag }}]</router-link>
+  <div class="container" :class="{'has-content': content && !keyword}">
+
+    <div class="snippets-tags vux-1px-l">
+      <ul class="list-unstyled vux-1px-r">
+        <li v-for="(tag, index) in tags" :class="[index > 0 ?'vux-1px-b' : 'vux-1px-tb']">
+          <router-link :to="'/snippets/' + tag">{{ tag }}</router-link>
         </li>
       </ul>
-    </div>
-
-    <div class="snippets-search">
-      <input type="text" placeholder="搜索关键字" v-model="keyword">
     </div>
 
     <div class="snippets-items">
-      <ul>
+      <div class="snippets-search">
+        <input type="text" placeholder="搜索关键字" v-model="keyword">
+      </div>
+
+      <ul class="list-unstyled">
         <li v-for="item in snippets">
-          <router-link :to="item.url">{{ item.title }}</router-link>
-          <span class="label" v-show="keyword.trim()">{{ item.tag }}</span>
+          <router-link :title="item.title" :to="item.url">
+            {{ item.title }}
+            <span class="label" v-show="keyword.trim()">{{ item.tag }}</span>
+          </router-link>
         </li>
       </ul>
     </div>
-    <div class="snippets-snippets" id="snippet-content" v-html="content" v-show="!keyword.trim()">
+
+    <div class="snippets-content" v-show="!keyword.trim() && content">
+      <h2 class="snippet-title">{{ item && item.title }}</h2>
+      <div id="snippet-content" v-html="content"></div>
     </div>
   </div>
 </template>
@@ -36,7 +42,7 @@ export default {
   name: 'hello',
   data () {
     return {
-      currTag: 'article',
+      currTag: '',
       content: '',
       keyword: ''
     }
@@ -58,6 +64,9 @@ export default {
           return prev
         }
       }, [])
+    },
+    item () {
+      return snippets.find(item => item.url === this.$route.path)
     }
   },
   created () {
@@ -70,7 +79,6 @@ export default {
   },
   methods: {
     toggleTag (tag) {
-      console.log(tag)
       this.currTag = tag
     },
     loadContent (url) {
@@ -115,31 +123,89 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-  ul {
-    list-style: none;
+  .container {
+    width: 100%;
+    margin: 0 auto;
+    max-width: 1280px;
+    padding: 10px;
   }
-  .list-inline li {
-    display: inline-block;
-    cursor: pointer;
+  a {
+    text-decoration: none;
+  }
+  .list-unstyled {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   .snippets-tags {
-    text-align: center;
+    float: left;
+    width: 15%;
+    max-width: 100px;
     .router-link-active {
       color: red;
+    }
+    a {
+      display: block;
+      padding: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
   .snippets-items {
+    float: left;
+    width: 60%;
+    max-width: 800px;
+    background: whiteSmoke;
+    padding: 10px;
+    margin: 0 15px;
     .router-link-active {
       color: red;
+    }
+    a {
+      display: block;
+      padding: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .snippets-search {
+    input {
+      height: 28px;
+      padding: 10px;
+      margin-bottom: 5px;
+    }
+  }
+
+  .snippets-content {
+    overflow: auto;
+    padding: 10px;
+    border: 1px dashed #aaa;
+    .snippet-title {
+      margin-bottom: 10px;
     }
   }
 
   .label {
-    background: #efefef;
+    background: #dfdfdf;
     border-radius: 3px;
     padding: 0 4px;
     font-size: 12px;
+  }
+
+  .has-content {
+    .snippets-tags,
+    .snippets-items {
+      max-height: 600px;
+      overflow-y: auto;
+    }
+    .snippets-items {
+      width: 20%;
+      max-width: 200px;
+    }
   }
 </style>
